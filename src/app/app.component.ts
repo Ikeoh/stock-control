@@ -18,13 +18,14 @@ import {ToastModule} from 'primeng/toast';
   imports: [
     CommonModule,
     RouterOutlet,
-    ReactiveFormsModule,
     HttpClientModule,
-    //PrimeNG
-    //CardModule,
-    //InputTextModule,
-    //ButtonModule,
-    //ToastModule,
+    //ReactiveFormsModule,
+
+    //Imports do PrimeNG
+      //CardModule,
+      //InputTextModule,
+      //ButtonModule,
+      //ToastModule,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
@@ -39,5 +40,4 @@ export class AppComponent implements OnInit{
   ngOnInit(): void {
     this.primengConfig.ripple = true
   }
-
 }
