@@ -18,7 +18,7 @@ import {ToastModule} from 'primeng/toast';
   imports: [
     CommonModule,
     RouterOutlet,
-    HttpClientModule,
+    //HttpClientModule,
     //ReactiveFormsModule,
 
     //Imports do PrimeNG
