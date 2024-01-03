@@ -7,6 +7,9 @@ import { InputTextModule } from 'primeng/inputtext';
 import { UserService } from '../../services/user/user.service';
 import { signupUserRequest } from '../../models/interface/user/signupUserRequest';
 import { authRequest } from '../../models/interface/user/auth/authRequest';
+import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @Component({
   selector: 'app-home',
@@ -16,10 +19,13 @@ import { authRequest } from '../../models/interface/user/auth/authRequest';
     InputTextModule,
     ButtonModule,
     ReactiveFormsModule,
+    ToastModule,
+    BrowserAnimationsModule,
   ],
   templateUrl: './home.component.html',
-  styleUrl: './home.component.scss'
+  styleUrl: './home.component.scss',
 })
+
 export class HomeComponent {
   loginCard = true;
 
@@ -38,6 +44,7 @@ export class HomeComponent {
     private formBuilder: FormBuilder,
     private userService: UserService,
     private cookieService: CookieService,
+    private messageService: MessageService,
   ) { }
 
   onSubmitLoginForm(): void {
@@ -48,9 +55,23 @@ export class HomeComponent {
             if (response) {
               this.cookieService.set('USER_INFO', response?.token);
               this.loginForm.reset();
+              this.messageService.add({
+                severity: 'success',
+                summary: 'success',
+                detail: 'Bem vindo de volta ${response?.name}!',
+                life: 2000,
+              });
             }
           },
-          error: (err) => console.log(err),
+          error: (err) => {
+            this.messageService.add({
+              severity: 'error',
+              summary: 'error',
+              detail: 'Erro ao fazer o login!',
+              life: 2000,
+            });
+            console.log(err);
+          },
         });
     }
   }
@@ -61,12 +82,26 @@ export class HomeComponent {
         .subscribe({
           next: (response) => {
             if (response) {
-              alert('Usuário criado com sucesso!');
+              //alert('Usuário criado com sucesso!');
               this.signupForm.reset();
               this.loginCard = true;
+              this.messageService.add({
+                severity: 'success',
+                summary: 'success',
+                detail: 'Usuário criado com sucesso!',
+                life: 2000,
+              });
             }
           },
-          error: (err) => console.log(err),
+          error: (err) => {
+            this.messageService.add({
+              severity: 'error',
+              summary: 'error',
+              detail: 'Erro ao criar o usuário!',
+              life: 2000,
+            });
+            console.log(err);
+          },
         });
     }
   }
