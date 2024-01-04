@@ -4,7 +4,6 @@ import { RouterOutlet } from '@angular/router';
 
 import { PrimeNGConfig, MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @Component({
   selector: 'app-root',
@@ -23,7 +22,6 @@ export class AppComponent implements OnInit {
 
   constructor(
     private primengConfig: PrimeNGConfig,
-    private messageService: MessageService,
   ) { }
 
   ngOnInit(): void {

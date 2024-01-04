@@ -4,6 +4,7 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { UserService } from '../../services/user/user.service';
 import { signupUserRequest } from '../../models/interface/user/signupUserRequest';
 import { authRequest } from '../../models/interface/user/auth/authRequest';
+import { TranslationsService } from '../../services/translations/translations.service';
 
 import { CardModule } from 'primeng/card';
 import { InputTextModule } from 'primeng/inputtext';
@@ -45,6 +46,7 @@ export class HomeComponent {
     private userService: UserService,
     private cookieService: CookieService,
     private messageService: MessageService,
+    private translationService: TranslationsService,
   ) { }
 
   onSubmitLoginForm(): void {
@@ -53,27 +55,29 @@ export class HomeComponent {
         .subscribe({
           next: (response) => {
             if (response) {
-              alert('Usuário logado com sucesso!');
               this.cookieService.set('USER_INFO', response?.token);
               this.loginForm.reset();
               this.messageService.add({
                 severity: 'success',
                 summary: 'success',
-                detail: 'Bem vindo de volta ${response?.name}!',
-                life: 2000,
+                detail: `Bem vindo de volta ${response?.name}!`,
+                life: 3000,
               });
             }
           },
           error: (err) => {
-            alert('Erro ao logar!');
+            let errorMessage = 'Erro ao fazer login!'; // Mensagem padrão
+            if (err && err.error && err.error.error) {
+              errorMessage = this.translationService.translateService(err.error.error); // Substitui pela mensagem de erro específica, se disponível
+            }
             this.messageService.add({
               severity: 'error',
-              summary: 'error',
-              detail: 'Erro ao fazer o login!',
-              life: 2000,
+              summary: 'Error',
+              detail: errorMessage,
+              life: 3000,
             });
             console.log(err);
-          },
+          }
         });
     }
   }
@@ -84,27 +88,29 @@ export class HomeComponent {
         .subscribe({
           next: (response) => {
             if (response) {
-              alert('Usuário criado com sucesso!');
               this.signupForm.reset();
               this.loginCard = true;
               this.messageService.add({
                 severity: 'success',
                 summary: 'success',
-                detail: 'Usuário criado com sucesso!',
-                life: 2000,
+                detail: `Usuário criado com sucesso!`,
+                life: 3000,
               });
             }
           },
           error: (err) => {
-            alert('Erro ao criar Usuário!');
+            let errorMessage = 'Erro ao criar o usuário!'; // Mensagem padrão
+            if (err && err.error && err.error.error) {
+              errorMessage = this.translationService.translateService(err.error.error); // Substitui pela mensagem de erro específica, se disponível
+            }
             this.messageService.add({
               severity: 'error',
-              summary: 'error',
-              detail: 'Erro ao criar o usuário!',
-              life: 2000,
+              summary: 'Error',
+              detail: errorMessage,
+              life: 3000,
             });
             console.log(err);
-          },
+          }
         });
     }
   }
