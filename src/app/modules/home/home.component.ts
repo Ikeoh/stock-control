@@ -1,15 +1,16 @@
 import { Component } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { CookieService } from 'ngx-cookie-service';
-import { ButtonModule } from 'primeng/button';
-import { CardModule } from 'primeng/card';
-import { InputTextModule } from 'primeng/inputtext';
+
 import { UserService } from '../../services/user/user.service';
 import { signupUserRequest } from '../../models/interface/user/signupUserRequest';
 import { authRequest } from '../../models/interface/user/auth/authRequest';
+
+import { CardModule } from 'primeng/card';
+import { InputTextModule } from 'primeng/inputtext';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ButtonModule } from 'primeng/button';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-home',
@@ -20,7 +21,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     ButtonModule,
     ReactiveFormsModule,
     ToastModule,
-    BrowserAnimationsModule,
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
@@ -53,6 +53,7 @@ export class HomeComponent {
         .subscribe({
           next: (response) => {
             if (response) {
+              alert('Usuário logado com sucesso!');
               this.cookieService.set('USER_INFO', response?.token);
               this.loginForm.reset();
               this.messageService.add({
@@ -64,6 +65,7 @@ export class HomeComponent {
             }
           },
           error: (err) => {
+            alert('Erro ao logar!');
             this.messageService.add({
               severity: 'error',
               summary: 'error',
@@ -82,7 +84,7 @@ export class HomeComponent {
         .subscribe({
           next: (response) => {
             if (response) {
-              //alert('Usuário criado com sucesso!');
+              alert('Usuário criado com sucesso!');
               this.signupForm.reset();
               this.loginCard = true;
               this.messageService.add({
@@ -94,6 +96,7 @@ export class HomeComponent {
             }
           },
           error: (err) => {
+            alert('Erro ao criar Usuário!');
             this.messageService.add({
               severity: 'error',
               summary: 'error',

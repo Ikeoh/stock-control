@@ -5,8 +5,6 @@ import { RouterOutlet } from '@angular/router';
 import { PrimeNGConfig, MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { BrowserModule } from '@angular/platform-browser';
-
 
 @Component({
   selector: 'app-root',
@@ -15,9 +13,8 @@ import { BrowserModule } from '@angular/platform-browser';
     CommonModule,
     RouterOutlet,
     ToastModule,
-    BrowserAnimationsModule,
   ],
-  providers: [MessageService, BrowserModule],
+  providers: [MessageService],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
