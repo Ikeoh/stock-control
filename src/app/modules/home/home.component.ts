@@ -1,17 +1,17 @@
 import { Component } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 
-import { UserService } from '../../services/user/user.service';
-import { signupUserRequest } from '../../models/interface/user/signupUserRequest';
 import { authRequest } from '../../models/interface/user/auth/authRequest';
+import { signupUserRequest } from '../../models/interface/user/signupUserRequest';
 import { TranslationsService } from '../../services/translations/translations.service';
+import { UserService } from '../../services/user/user.service';
 
-import { CardModule } from 'primeng/card';
-import { InputTextModule } from 'primeng/inputtext';
-import { ToastModule } from 'primeng/toast';
+import { CookieService } from 'ngx-cookie-service';
 import { MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
-import { CookieService } from 'ngx-cookie-service';
+import { CardModule } from 'primeng/card';
+import { InputTextModule } from 'primeng/inputtext';
 
 @Component({
   selector: 'app-home',
@@ -21,7 +21,6 @@ import { CookieService } from 'ngx-cookie-service';
     InputTextModule,
     ButtonModule,
     ReactiveFormsModule,
-    ToastModule,
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
@@ -47,6 +46,7 @@ export class HomeComponent {
     private cookieService: CookieService,
     private messageService: MessageService,
     private translationService: TranslationsService,
+    private router: Router,
   ) { }
 
   onSubmitLoginForm(): void {
@@ -57,6 +57,7 @@ export class HomeComponent {
             if (response) {
               this.cookieService.set('USER_INFO', response?.token);
               this.loginForm.reset();
+              this.router.navigate(['/dashboard']);
               this.messageService.add({
                 severity: 'success',
                 summary: 'success',
