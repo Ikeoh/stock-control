@@ -82,9 +82,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
         datasets: [
           {
             label: 'Quantidade',
-            backgroundColor: documentStyle.getPropertyValue('--indigo-400'),
-            borderColor: documentStyle.getPropertyValue('--indigo-400'),
-            hoverBackgroundColor: documentStyle.getPropertyValue('--indigo-500'),
+            backgroundColor: documentStyle.getPropertyValue('--gray-500'),
+            borderColor: documentStyle.getPropertyValue('--gray-500'),
+            hoverBackgroundColor: documentStyle.getPropertyValue('--gray-500'),
             data: this.productsList.map((element) => element?.amount),
           },
         ],

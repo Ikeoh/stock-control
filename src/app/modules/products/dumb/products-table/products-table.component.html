@@ -1,6 +1,6 @@
 <div class="grid">
   <div class="col-12">
-    <p-card styleClass="shadow-3 m-5 text-indigo-800" header="Produtos em estoque">
+    <p-card styleClass="shadow-3 m-5 text-gray-800" header="Produtos em estoque">
       <p-table #productsTable [value]="products" [rows]="10" [paginator]="true" [responsive]="true" [globalFilterFields]="['name', 'amunt']" [tableStyle]="{'min-width': '75rem'}" [(selection)]="productSelected" [rowHover]="true" [showCurrentPageReport]="true" dataKey="id" currentPageReportTemplate="Mostrando {first} de {last} de {totalRecords} produtos">
         <ng-template pTemplate="header">
           <tr>
@@ -61,10 +61,26 @@
               </div>
             </th>
             <th>
-              <div class="flex justify-content-between">
-                <p-button styleClass="p-button-info" icon="pi pi-plus" label="Adicionar" pTooltip="Adicionar produto" tooltipPosition="top"></p-button>
+              <div class="flex justify-content-center align-items-center">
+                <p-button styleClass="p-button-info" icon="pi pi-plus" label="Adicionar" pTooltip="Adicionar produto" tooltipPosition="top" (onClick)="handleProductEvent(addProductEvent)"></p-button>
               </div>
             </th>
+          </tr>
+        </ng-template>
+
+        <ng-template pTemplate="body" let-product>
+          <tr>
+            <td>{{product?.name}}</td>
+            <td>{{product?.amount}}</td>
+            <td>{{product?.price | currency : "BRL"}}</td>
+            <td [pTooltip]="product?.description" tooltipPosition="top">{{product?.description}}</td>
+            <td>{{product?.category?.name}}</td>
+            <td>
+              <div class="flex justify-content-center gap-3 align-content-center align-items-center">
+                <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-warning" pTooltip="Editar produto" tooltipPosition="top" (click)="handleProductEvent(editProductEvent, product?.id)"></button>
+                <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger" pTooltip="Remover produto" tooltipPosition="top" (click)="handleDeleteProduct(product?.id, product?.name)"></button>
+              </div>
+            </td>
           </tr>
         </ng-template>
       </p-table>
