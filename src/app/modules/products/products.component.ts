@@ -9,7 +9,7 @@ import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { DropdownModule } from 'primeng/dropdown';
-import { DynamicDialogModule } from 'primeng/dynamicdialog';
+import { DialogService, DynamicDialogModule, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { InputMaskModule } from 'primeng/inputmask';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { InputSwitchModule } from 'primeng/inputswitch';
@@ -23,6 +23,7 @@ import { eventAction } from '../../models/interface/products/event/eventAction';
 import { getAllProductsResponse } from '../../models/interface/products/response/getAllProductsResponse';
 import { ToolbarNavigationComponent } from '../../shared/components/toolbar-navigation/toolbar-navigation.component';
 import { ProductsDataTransferService } from '../../shared/services/products/products-data-transfer.service';
+import { ProductsFormComponent } from './dumb/products-form/products-form.component';
 import { ProductsTableComponent } from './dumb/products-table/products-table.component';
 
 @Component({
@@ -51,6 +52,8 @@ import { ProductsTableComponent } from './dumb/products-table/products-table.com
 })
 export class ProductsComponent implements OnInit, OnDestroy {
   private readonly destroy$: Subject<void> = new Subject();
+
+  private ref!: DynamicDialogRef
   public productsDatas: Array<getAllProductsResponse> = [];
 
   constructor(
@@ -59,10 +62,13 @@ export class ProductsComponent implements OnInit, OnDestroy {
     private router: Router,
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
+    private dialogService: DialogService,
   ) { }
 
   ngOnInit(): void {
     this.getServiceProductsDatas();
+    console.log('Dados a serem passados para o modal:', this.productsDatas);
+
   }
 
   getServiceProductsDatas() {
@@ -100,7 +106,21 @@ export class ProductsComponent implements OnInit, OnDestroy {
 
   handleProductAction(event: eventAction): void {
     if (event) {
-      console.log('DADOS DO EVENTO RECEBIDO', event);
+      this.ref = this.dialogService.open(ProductsFormComponent, {
+        header: event?.action,
+        width: '70%',
+        contentStyle: { overflow: 'auto' },
+        baseZIndex: 10000,
+        maximizable: true,
+        data: {
+          event: event,
+          productsDatas: this.productsDatas,
+        }
+      })
+      this.ref.onClose.pipe(takeUntil(this.destroy$))
+        .subscribe({
+          next: () => this.getAPIProductsDatas()
+        })
     }
   }
 
