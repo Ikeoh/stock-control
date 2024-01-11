@@ -15,11 +15,11 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
 import { TableModule } from 'primeng/table';
 import { TooltipModule } from 'primeng/tooltip';
 
-import { productEvent } from '../../../../models/enums/products/productEvent';
-import { deleteProductAction } from '../../../../models/interface/products/event/deleteProductAction';
-import { eventAction } from '../../../../models/interface/products/event/eventAction';
-import { getAllProductsResponse } from '../../../../models/interface/products/response/getAllProductsResponse';
-import { ProductsComponent } from '../../products.component';
+import { productEvent } from '../../../models/enums/products/productEvent';
+import { deleteProductAction } from '../../../models/interface/products/event/deleteProductAction';
+import { eventAction } from '../../../models/interface/products/event/eventAction';
+import { getAllProductsResponse } from '../../../models/interface/products/response/getAllProductsResponse';
+import { ProductsComponent } from '../products.component';
 
 @Component({
   selector: 'app-products-table',

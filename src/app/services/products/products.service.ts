@@ -6,7 +6,7 @@ import { Observable, map } from 'rxjs';
 
 import { enviroment } from '../../../enviroments/enviroment';
 import { createProductRequest } from '../../models/interface/products/request/createProductRequest';
-import { editProductResquest } from '../../models/interface/products/request/editProductRquest';
+import { editProductResquest } from '../../models/interface/products/request/editProductRequest';
 import { createProductResponse } from '../../models/interface/products/response/createProductResponse';
 import { deleteProductResponse } from '../../models/interface/products/response/deleteProductResponse';
 import { getAllProductsResponse } from '../../models/interface/products/response/getAllProductsResponse';
