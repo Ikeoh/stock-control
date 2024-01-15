@@ -37,17 +37,17 @@ export class ProductsFormComponent implements OnInit, OnDestroy {
 
   public productAction!: {
     event: eventAction;
-    productsDatas: Array<getAllProductsResponse>
+    productDatas: Array<getAllProductsResponse>
   }
   public productSelectedDatas!: getAllProductsResponse
-  public productsDatas: Array<getAllProductsResponse> = []
+  public productDatas: Array<getAllProductsResponse> = []
 
   public addProductForm = this.formBuilder.group({
     name: ['', Validators.required],
     price: ['', Validators.required],
     description: ['', Validators.required],
     category_id: ['', Validators.required],
-    amount: [0, Validators.required]
+    amount: [0, Validators.required],
   })
 
   public editProductForm = this.formBuilder.group({
@@ -67,7 +67,7 @@ export class ProductsFormComponent implements OnInit, OnDestroy {
 
   public addProductAction = productEvent.ADD_PRODUCT_EVENT
   public editProductAction = productEvent.EDIT_PRODUCT_EVENT
-  public saletProductAction = productEvent.SALE_PRODUCT_EVENT
+  public saleProductAction = productEvent.SALE_PRODUCT_EVENT
 
   constructor(
     private categoriesService: CategoriesService,
@@ -82,7 +82,11 @@ export class ProductsFormComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.productAction = this.ref.data
 
-    this.productAction?.event?.action === this.saletProductAction && this.getProductDatas()
+    if (this.productAction?.event?.action === this.editProductAction &&
+      this.productAction?.productDatas) {
+      this.getProductSelectedDatas(this.productAction?.event?.id as string)
+    }
+    this.productAction?.event?.action === this.saleProductAction && this.getProductDatas()
     this.getAllCategories()
     this.renderDropdown = true
   }
@@ -95,10 +99,6 @@ export class ProductsFormComponent implements OnInit, OnDestroy {
         next: (response) => {
           if (response.length > 0) {
             this.categoriesDatas = response;
-            if (this.productAction?.event?.action === this.editProductAction &&
-              this.productAction?.productsDatas) {
-              this.getProductSelectedDatas(this.productAction?.event?.id as string)
-            }
           }
         }
       })
@@ -141,7 +141,7 @@ export class ProductsFormComponent implements OnInit, OnDestroy {
   }
 
   handleSubmitEditProduct(): void {
-    if (this.editProductForm.value && this.editProductForm.valid && this.productAction?.event?.id) {
+    if (this.editProductForm.value && this.editProductForm.valid && this.productAction.event.id) {
       const requestEditProduct: editProductResquest = {
         name: this.editProductForm.value.name as string,
         price: this.editProductForm.value.price as string,
@@ -177,7 +177,7 @@ export class ProductsFormComponent implements OnInit, OnDestroy {
   }
 
   getProductSelectedDatas(productId: string): void {
-    const allProducts = this.productAction?.productsDatas
+    const allProducts = this.productAction?.productDatas
     if (allProducts.length > 0) {
       const productFiltered = allProducts.filter((element) => element?.id === productId)
       console.log('Produto filtrado:', productFiltered);
@@ -185,11 +185,11 @@ export class ProductsFormComponent implements OnInit, OnDestroy {
       if (productFiltered) {
         this.productSelectedDatas = productFiltered[0]
         this.editProductForm.setValue({
-          name: this.productSelectedDatas.name,
-          price: this.productSelectedDatas.price,
-          amount: this.productSelectedDatas.amount,
-          description: this.productSelectedDatas.description,
-          category_id: this.productSelectedDatas.category.id,
+          name: this.productSelectedDatas?.name,
+          price: this.productSelectedDatas?.price,
+          amount: this.productSelectedDatas?.amount,
+          description: this.productSelectedDatas?.description,
+          category_id: this.productSelectedDatas?.category.id,
         })
       }
     }
@@ -201,8 +201,8 @@ export class ProductsFormComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (response) => {
           if (response.length > 0) {
-            this.productsDatas = response
-            this.productsDatas && this.productDtService.setProductsDatas(this.productsDatas)
+            this.productDatas = response
+            this.productDatas && this.productDtService.setProductsDatas(this.productDatas)
           }
         }
       })
